@@ -13,6 +13,7 @@ import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.monolith.ui.ClickGuiScreen;
+import net.monolith.ui.ModernGuiScreen;
 import net.monolith.ui.CustomGuiScreen;
 import net.monolith.module.Module;
 import net.monolith.module.ModuleManager;
@@ -21,7 +22,6 @@ import net.monolith.hud.HudManager;
 public class Monolith implements ClientModInitializer {
     public static final String MOD_ID = "monolith";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
-    
     private static KeyBinding guiKeyBinding;
 
     @Override
@@ -30,21 +30,21 @@ public class Monolith implements ClientModInitializer {
         HudManager.init();
 
         guiKeyBinding = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-                "key.monolith.opengui",
-                InputUtil.Type.KEYSYM,
-                GLFW.GLFW_KEY_RIGHT_SHIFT,
-                "category.monolith.main"
+                "key.monolith.opengui", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_RIGHT_SHIFT, "category.monolith.main"
         ));
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (guiKeyBinding.wasPressed()) {
                 if (client.currentScreen == null) {
                     Module cg = ModuleManager.getModule("ClickGui");
-                    // Проверяем текущий стиль ClickGui и открываем соответствующий Screen
-                    if (cg != null && "TestCustom".equals(cg.currentMode)) {
-                        client.setScreen(new CustomGuiScreen());
+                    if (cg != null) {
+                        switch (cg.currentMode) {
+                            case "Modern": client.setScreen(new ModernGuiScreen()); break;
+                            case "DropDown": client.setScreen(new ClickGuiScreen()); break;
+                            case "Pillar": default: client.setScreen(new CustomGuiScreen()); break;
+                        }
                     } else {
-                        client.setScreen(new ClickGuiScreen());
+                        client.setScreen(new CustomGuiScreen());
                     }
                 }
             }

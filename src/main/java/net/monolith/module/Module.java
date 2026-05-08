@@ -8,10 +8,13 @@ public class Module {
     public String category;
     public boolean enabled;
     
-    // Настройки режима
     public List<String> modes = new ArrayList<>();
     public String currentMode = "";
     public boolean expanded = false;
+
+    public float toggleAnim = 0f;
+    public float expandAnim = 0f;
+    public float hoverAnim = 0f;
 
     public Module(String name, String category) {
         this.name = name;
@@ -19,9 +22,7 @@ public class Module {
         this.enabled = false;
     }
 
-    public void toggle() {
-        this.enabled = !this.enabled;
-    }
+    public void toggle() { this.enabled = !this.enabled; }
 
     public void cycleMode() {
         if (modes.isEmpty()) return;

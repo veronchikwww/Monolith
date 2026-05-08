@@ -8,10 +8,7 @@ public abstract class HudElement {
     private int dragX, dragY;
 
     public HudElement(int x, int y, int width, int height) {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
+        this.x = x; this.y = y; this.width = width; this.height = height;
     }
 
     public abstract void render(DrawContext context, float tickDelta);
@@ -21,22 +18,17 @@ public abstract class HudElement {
             this.x = mouseX - dragX;
             this.y = mouseY - dragY;
         }
-        // Отрисовка рамки при редактировании (в чате)
         context.fill(x - 2, y - 2, x + width + 2, y + height + 2, 0x44FFFFFF);
         render(context, 0);
     }
 
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (button == 0 && mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height) {
-            dragging = true;
-            dragX = (int) (mouseX - x);
-            dragY = (int) (mouseY - y);
+            dragging = true; dragX = (int) (mouseX - x); dragY = (int) (mouseY - y);
             return true;
         }
         return false;
     }
 
-    public void mouseReleased(int button) {
-        if (button == 0) dragging = false;
-    }
+    public void mouseReleased(int button) { if (button == 0) dragging = false; }
 }

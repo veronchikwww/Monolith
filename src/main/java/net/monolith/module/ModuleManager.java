@@ -9,25 +9,28 @@ public class ModuleManager {
 
     public static void init() {
         modules.add(new Module("AttackAura", "Combat"));
+        modules.add(new Module("Velocity", "Combat"));
         
         Module hudModule = new Module("HUD", "Visuals");
         hudModule.enabled = true;
         modules.add(hudModule);
-        
         modules.add(new Module("Fullbright", "Visuals"));
         
         Module clickGui = new Module("ClickGui", "Visuals");
-        clickGui.modes = Arrays.asList("DropDown", "TestCustom");
-        clickGui.currentMode = "DropDown";
+        clickGui.modes = Arrays.asList("Pillar", "Modern", "DropDown");
+        clickGui.currentMode = "Pillar";
         modules.add(clickGui);
+        
+        modules.add(new Module("Sprint", "Movement"));
+        modules.add(new Module("NoSlow", "Movement"));
+        modules.add(new Module("AutoArmor", "Player"));
+        modules.add(new Module("InventoryPlus", "Misc"));
     }
 
     public static List<Module> getModulesByCategory(String category) {
         List<Module> result = new ArrayList<>();
         for (Module m : modules) {
-            if (m.category.equals(category)) {
-                result.add(m);
-            }
+            if (m.category.equals(category)) result.add(m);
         }
         return result;
     }
