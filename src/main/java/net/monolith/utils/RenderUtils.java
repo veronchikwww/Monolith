@@ -1,8 +1,36 @@
 package net.monolith.utils;
 
+import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.text.Style;
+import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 
 public class RenderUtils {
+    // Указываем ID нашего кастомного шрифта
+    public static final Identifier CUSTOM_FONT = Identifier.of("monolith", "main");
+
+    // Обертка для создания текста с нашим шрифтом
+    public static Text getCustomText(String text) {
+        return Text.literal(text).setStyle(Style.EMPTY.withFont(CUSTOM_FONT));
+    }
+
+    // Отрисовка кастомного текста
+    public static void drawText(DrawContext context, TextRenderer renderer, String text, int x, int y, int color, boolean shadow) {
+        context.drawText(renderer, getCustomText(text), x, y, color, shadow);
+    }
+
+    // Отрисовка кастомного текста по центру
+    public static void drawCenteredText(DrawContext context, TextRenderer renderer, String text, int centerX, int y, int color, boolean shadow) {
+        Text styled = getCustomText(text);
+        context.drawText(renderer, styled, centerX - renderer.getWidth(styled) / 2, y, color, shadow);
+    }
+
+    // Получение ширины кастомного текста
+    public static int getTextWidth(TextRenderer renderer, String text) {
+        return renderer.getWidth(getCustomText(text));
+    }
+
     public static void drawRect(DrawContext context, int x, int y, int width, int height, int color) {
         context.fill(x, y, x + width, y + height, color);
     }

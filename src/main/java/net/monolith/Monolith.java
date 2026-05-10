@@ -13,8 +13,8 @@ import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.monolith.ui.ClickGuiScreen;
-import net.monolith.ui.ModernGuiScreen;
-import net.monolith.ui.CustomGuiScreen;
+import net.monolith.ui.CardsGuiScreen;
+import net.monolith.ui.CsGuiScreen;
 import net.monolith.module.Module;
 import net.monolith.module.ModuleManager;
 import net.monolith.hud.HudManager;
@@ -39,12 +39,12 @@ public class Monolith implements ClientModInitializer {
                     Module cg = ModuleManager.getModule("ClickGui");
                     if (cg != null) {
                         switch (cg.currentMode) {
-                            case "Modern": client.setScreen(new ModernGuiScreen()); break;
-                            case "DropDown": client.setScreen(new ClickGuiScreen()); break;
-                            case "Pillar": default: client.setScreen(new CustomGuiScreen()); break;
+                            case "Cards": client.setScreen(new CardsGuiScreen()); break;
+                            case "CsGui": client.setScreen(new CsGuiScreen()); break;
+                            case "DropDown": default: client.setScreen(new ClickGuiScreen()); break;
                         }
                     } else {
-                        client.setScreen(new CustomGuiScreen());
+                        client.setScreen(new CsGuiScreen());
                     }
                 }
             }

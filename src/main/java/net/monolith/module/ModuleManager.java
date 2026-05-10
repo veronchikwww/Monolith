@@ -14,23 +14,25 @@ public class ModuleManager {
         Module hudModule = new Module("HUD", "Visuals");
         hudModule.enabled = true;
         modules.add(hudModule);
+        
         modules.add(new Module("Fullbright", "Visuals"));
         
         Module clickGui = new Module("ClickGui", "Visuals");
-        clickGui.modes = Arrays.asList("Pillar", "Modern", "DropDown");
-        clickGui.currentMode = "Pillar";
+        // Новые режимы
+        clickGui.modes = Arrays.asList("DropDown", "Cards", "CsGui");
+        clickGui.currentMode = "CsGui"; // По умолчанию поставим CS-стиль
         modules.add(clickGui);
         
         modules.add(new Module("Sprint", "Movement"));
         modules.add(new Module("NoSlow", "Movement"));
-        modules.add(new Module("AutoArmor", "Player"));
-        modules.add(new Module("InventoryPlus", "Misc"));
     }
 
     public static List<Module> getModulesByCategory(String category) {
         List<Module> result = new ArrayList<>();
         for (Module m : modules) {
-            if (m.category.equals(category)) result.add(m);
+            if (m.category.equals(category)) {
+                result.add(m);
+            }
         }
         return result;
     }
