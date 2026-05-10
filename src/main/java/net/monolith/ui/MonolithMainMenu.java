@@ -1,6 +1,5 @@
 package net.monolith.ui;
 
-import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
@@ -30,11 +29,10 @@ public class MonolithMainMenu extends Screen {
         
         int btnWidth = 200;
         int btnHeight = 35;
-        
         int startX = this.width - btnWidth - 25;
         int startY = (this.height - (4 * (btnHeight + 15))) / 2;
 
-        // ИСПРАВЛЕНИЕ: Перевели на английский, чтобы шрифт Intel Mono работал без квадратиков
+        // Передаем 'this' (текущее меню) как родителя, чтобы кнопка 'Back' возвращала сюда
         buttons.add(new MenuButton("Singleplayer", startX, startY, btnWidth, btnHeight, () -> {
             this.client.setScreen(new SelectWorldScreen(this));
         }));
@@ -50,6 +48,12 @@ public class MonolithMainMenu extends Screen {
     }
 
     @Override
+    public void close() {
+        // ИСПРАВЛЕНИЕ: Блокируем закрытие меню по кнопке Esc
+        // Теперь выйти из этого меню в стандартное невозможно
+    }
+
+    @Override
     public void renderBackground(DrawContext context, int mouseX, int mouseY, float delta) {
         context.fillGradient(0, 0, this.width, this.height, 0xFF050508, 0xFF000000);
     }
@@ -59,7 +63,7 @@ public class MonolithMainMenu extends Screen {
         super.render(context, mouseX, mouseY, delta);
         openAnim = RenderUtils.lerp(openAnim, 1f, 0.1f * delta);
 
-        // --- Логотип ---
+        // Логотип
         int logoSize = (int)(320 * openAnim);
         int logoX = (this.width / 2) - 200 - (logoSize / 2);
         int logoY = (this.height / 2) - (logoSize / 2);
@@ -68,18 +72,16 @@ public class MonolithMainMenu extends Screen {
         float breathe = (float)Math.sin(System.currentTimeMillis() / 1000.0) * 8;
         context.drawTexture(net.minecraft.client.render.RenderLayer::getGuiTextured, LOGO_TEXTURE, logoX, (int)(logoY + breathe), 0.0f, 0.0f, logoSize, logoSize, logoSize, logoSize);
         
-        // --- Боковая панель ---
+        // Боковая панель
         int panelWidth = 260;
         int panelX = this.width - panelWidth;
         RenderUtils.drawRect(context, panelX, 0, panelWidth, this.height, 0x880A0A0C);
 
-        // --- Кнопки ---
         for (MenuButton btn : buttons) {
             btn.render(context, mouseX, mouseY, delta);
         }
         
         RenderUtils.drawText(context, textRenderer, "Monolith Client v1.0", 10, this.height - 15, 0x33FFFFFF, false);
-
         context.getMatrices().pop();
     }
 
@@ -115,7 +117,6 @@ public class MonolithMainMenu extends Screen {
             int textColor = RenderUtils.lerpColor(0xFFAAAAAA, 0xFFFFFFFF, hoverAnim);
             int textOffset = (int)(8 * hoverAnim);
             
-            // ИСПРАВЛЕНИЕ: Вызываем отрисовку строго через наш RenderUtils, чтобы наложился шрифт
             RenderUtils.drawText(context, textRenderer, textString, x + 20 + textOffset, y + (height - 8) / 2, textColor, false);
         }
 

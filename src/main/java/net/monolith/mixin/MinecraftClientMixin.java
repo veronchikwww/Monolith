@@ -13,9 +13,10 @@ import net.monolith.ui.MonolithMainMenu;
 public class MinecraftClientMixin {
     @Inject(method = "setScreen", at = @At("HEAD"), cancellable = true)
     private void onSetScreen(Screen screen, CallbackInfo ci) {
-        // Перехватываем открытие стандартного меню
-        if (screen != null && screen.getClass() == TitleScreen.class) {
-            ci.cancel();
+        // Если экран не пустой и является TitleScreen (ванильное меню)
+        if (screen instanceof TitleScreen) {
+            ci.cancel(); // Отменяем установку ванильного экрана
+            // Устанавливаем наше кастомное меню
             ((MinecraftClient)(Object)this).setScreen(new MonolithMainMenu());
         }
     }
